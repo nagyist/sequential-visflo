@@ -1,0 +1,5 @@
+packages:
+  - './designer'
+  - './grammar'
+  - './interpreter'
+  - './demos/webpack-app'

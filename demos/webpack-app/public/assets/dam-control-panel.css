@@ -1,0 +1,64 @@
+body,
+html {
+	margin: 0;
+	padding: 0;
+	font:
+		14px/1.3em Arial,
+		Verdana,
+		sans-serif;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+#control {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 10px;
+	z-index: 6;
+	text-align: center;
+}
+#level-of-water-control {
+	display: inline-block;
+	background: #fff;
+	padding: 10px 20px;
+	border-radius: 10px;
+}
+#level-of-water-control h1 {
+	margin: 5px 0 10px;
+	padding: 0;
+	font-size: 20px;
+	line-height: 1.2em;
+}
+@media (max-width: 600px) {
+	#level-of-water-control {
+		padding: 10px;
+	}
+	#level-of-water-control h1 {
+		font-size: 16px;
+	}
+}
+#level-of-water-control h1 a {
+	color: #2c18df;
+}
+#level-of-water-control h1 a:hover {
+	text-decoration: none;
+}
+#level-of-water-control input {
+	width: 120px;
+	vertical-align: middle;
+}
+#simulation {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 4;
+}
+#designer {
+	position: absolute;
+	left: 0;
+	top: 40%;
+	right: 0;
+	width: 100%;
+	height: 60%;
+}

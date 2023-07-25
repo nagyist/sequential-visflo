@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>💧 Dam Control Panel - Visflo Visual Language</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<link rel="icon" href="./assets/favicon.ico" />
+		<script src="./builds/dam-control-panel.js" defer></script>
+		<link rel="stylesheet" href="./assets/dam-control-panel.css" />
+
+		<link href="https://cdn.jsdelivr.net/npm/sequential-workflow-designer@0.13.7/css/designer.css" rel="stylesheet" />
+		<link href="https://cdn.jsdelivr.net/npm/sequential-workflow-designer@0.13.7/css/designer-light.css" rel="stylesheet" />
+		<link href="https://cdn.jsdelivr.net/npm/sequential-workflow-designer@0.13.7/css/designer-dark.css" rel="stylesheet" />
+		<link href="https://cdn.jsdelivr.net/npm/sequential-workflow-editor@0.7.2/css/editor.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div id="control">
+			<div id="level-of-water-control">
+				<h1>💧 Dam Control Panel &mdash; <a href="https://nocode-js.com/" target="_blank">Visflo</a> Example</h1>
+				<div id="panel">
+					Level of Water
+					<input type="range" id="waterLevel" min="40" max="100" value="80" />
+					(40 - 100)
+				</div>
+			</div>
+		</div>
+
+		<canvas id="simulation"></canvas>
+
+		<div id="designer"></div>
+	</body>
+</html>

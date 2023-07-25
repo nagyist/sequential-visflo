@@ -1,0 +1,33 @@
+{
+	"name": "webpack-app-demo",
+	"author": "NoCode JS",
+	"license": "MIT",
+	"private": true,
+	"version": "1.0.0",
+	"scripts": {
+		"clean": "rm -rf public/build",
+		"start": "webpack --mode development --watch",
+		"build": "yarn clean && webpack --mode production",
+		"eslint": "eslint ./src --ext .ts",
+		"test:single": "echo \"No tests yet\"",
+		"prettier": "prettier --check ./src ./public/**/*.{html,css}",
+		"prettier:fix": "prettier --write ./src ./public/**/*.{html,css}"
+	},
+	"dependencies": {
+		"@visflo/interpreter": "^0.1.0",
+		"@visflo/grammar": "^0.1.0",
+		"@visflo/designer": "^0.1.0"
+	},
+	"devDependencies": {
+		"ts-loader": "^9.4.4",
+		"style-loader": "^3.3.3",
+		"css-loader": "^6.8.1",
+		"typescript": "^5.1.6",
+		"webpack": "^5.88.1",
+		"webpack-cli": "^5.1.4",
+		"prettier": "^3.0.0",
+		"@typescript-eslint/eslint-plugin": "^6.0.0",
+		"@typescript-eslint/parser": "^6.0.0",
+		"eslint": "^8.45.0"
+	}
+}

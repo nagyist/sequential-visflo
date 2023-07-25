@@ -1,0 +1,12 @@
+{
+	"name": "visflo-workspace",
+	"license": "MIT",
+	"scripts": {
+		"build": "pnpm run -r build",
+		"prettier:fix": "pnpm run -r prettier:fix",
+		"serve": "http-server -c-1 -p 4999 ./"
+	},
+	"devDependencies": {
+		"http-server": "^14.1.1"
+	}
+}
