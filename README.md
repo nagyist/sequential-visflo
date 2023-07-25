@@ -6,7 +6,7 @@ Extendable high-level **visual programming language**. Develop visually your pro
 
 Examples:
 
-* [💧 Dam Control Panel](https://nocode-js.github.io/visflo/webpack-app/public/dam-control-panel.html)
+* [💧 Dam Control Panel](https://nocode-js.github.io/visflo/webpack-app/dam-control-panel.html)
 
 ## 💡 License
 
