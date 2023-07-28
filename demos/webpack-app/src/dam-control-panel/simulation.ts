@@ -1,6 +1,13 @@
-const SIMULATION_HEIGHT = 0.4;
+const DISPLAY_HEIGHT = 0.4;
 const WAVE_HEIGHT = 6;
+const DAM_WIDTH = 0.05;
 const DAM_HEIGHT = 0.7;
+const OUTFLOW_HEIGHT = 0.2;
+const OUTFLOW_BOTTOM = 0.1;
+const WAVE_LENGTH = 22;
+const WAVE_SPEED = 4;
+const PIPE_HEIGHT = 10;
+const LOCK_SPEED = 4;
 
 export class Simulation {
 	public static create() {
@@ -14,7 +21,9 @@ export class Simulation {
 	}
 
 	private waveOffset = 0;
-	private lockLevel = 1;
+	private lockLevelTarget = 1;
+	private lockLevel = 0.5;
+	private lastTime: number | null = null;
 
 	private constructor(
 		private readonly canvas: HTMLCanvasElement,
@@ -32,29 +41,32 @@ export class Simulation {
 	}
 
 	public setLockLevel(value: number) {
-		this.lockLevel = Math.min(100, Math.max(0, value)) / 100;
+		this.lockLevelTarget = Math.min(100, Math.max(0, value)) / 100;
 	}
 
-	public render() {
+	public readonly render = () => {
+		const now = Date.now();
+		const dt = this.lastTime ? (now - this.lastTime) / 1000 : 0;
+		this.lastTime = now;
+
 		const width = window.innerWidth;
-		const height = window.innerHeight * SIMULATION_HEIGHT;
+		const height = window.innerHeight * DISPLAY_HEIGHT;
 
 		this.canvas.width = width;
 		this.canvas.height = height;
 
-		const damHeight = height * DAM_HEIGHT;
-		const damTop = height - damHeight;
-
 		const waterLevel = this.getWaterLevel() / 100;
 
-		const wallWidth = width / 16;
-		const wallWidth2 = wallWidth / 2;
-		const wallLeft = width / 2 - wallWidth2;
+		const damHeight = height * DAM_HEIGHT;
+		const damTop = height - damHeight;
+		const damWidth = width * DAM_WIDTH;
+		const damLeft = width / 2 - damWidth / 2 - 1;
 
-		const outflowHeight = damHeight / 5;
-		const outflowBottom = damHeight / 8;
+		const outflowHeight = damHeight * OUTFLOW_HEIGHT;
+		const outflowBottom = damHeight * OUTFLOW_BOTTOM;
 		const outflowTop = height - outflowBottom - outflowHeight;
 
+		this.lockLevel += (this.lockLevelTarget - this.lockLevel) * (LOCK_SPEED * dt);
 		const lockHeight = outflowHeight * this.lockLevel;
 
 		const streamHeight = outflowHeight - lockHeight;
@@ -65,13 +77,13 @@ export class Simulation {
 
 		// water
 		const waterHeight = damHeight * waterLevel - WAVE_HEIGHT;
-		const waterWidth = width / 2 - wallWidth2;
+		const waterWidth = width / 2 - damWidth / 2;
 		const waterTop = height - waterHeight;
 		this.context.fillStyle = '#2E8BC0';
 		this.context.beginPath();
 		this.context.moveTo(0, waterTop);
 		for (let x = 0; x < waterWidth; x++) {
-			const y = waterTop + Math.sin(x / 22 + this.waveOffset) * WAVE_HEIGHT + Math.sin(this.waveOffset) * WAVE_HEIGHT;
+			const y = waterTop + Math.sin(x / WAVE_LENGTH + this.waveOffset) * WAVE_HEIGHT + Math.sin(this.waveOffset) * WAVE_HEIGHT;
 			this.context.lineTo(x, y);
 		}
 		this.context.lineTo(waterWidth, height);
@@ -80,26 +92,25 @@ export class Simulation {
 		this.context.lineTo(0, 0);
 		this.context.closePath();
 		this.context.fill();
-		this.waveOffset -= 0.05;
+		this.waveOffset -= dt * WAVE_SPEED;
 
 		// wall
 		this.context.fillStyle = '#FFF';
-		this.context.fillRect(wallLeft, damTop, wallWidth, damHeight);
+		this.context.fillRect(damLeft, damTop, damWidth, damHeight);
 
-		// outflow
+		// pipe
 		this.context.fillStyle = '#222';
-		this.context.fillRect(wallLeft, outflowTop - 10, wallWidth, 10);
-		this.context.fillRect(wallLeft, outflowTop + outflowHeight, wallWidth, 10);
+		this.context.fillRect(damLeft, outflowTop - PIPE_HEIGHT, damWidth, PIPE_HEIGHT * 2 + outflowHeight);
 
 		// water in outflow
 		this.context.fillStyle = '#2E8BC0';
-		this.context.fillRect(wallLeft - 2, outflowTop + lockHeight, wallWidth + 2, streamHeight);
+		this.context.fillRect(damLeft - 2, outflowTop + lockHeight, damWidth + 2, streamHeight);
 
-		if (this.lockLevel < 1) {
+		if (this.lockLevel < 0.98) {
 			// stream
 			this.context.beginPath();
 			this.context.arc(
-				wallLeft + wallWidth - 5,
+				damLeft + damWidth - 5,
 				height,
 				height - outflowTop - lockHeight - streamHeight / 2,
 				Math.PI * 1.5,
@@ -114,8 +125,8 @@ export class Simulation {
 
 		// lock
 		this.context.fillStyle = '#555';
-		this.context.fillRect(wallLeft, outflowTop, wallWidth, lockHeight);
+		this.context.fillRect(damLeft, outflowTop, damWidth, lockHeight);
 
-		requestAnimationFrame(() => this.render());
-	}
+		requestAnimationFrame(this.render);
+	};
 }
